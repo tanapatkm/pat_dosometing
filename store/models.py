@@ -149,6 +149,7 @@ class PurchaseOrderProduct(models.Model):
     wight = models.CharField(max_length=255, db_index=True, null=False)
     lenght = models.CharField(max_length=255, db_index=True, null=False)
     height = models.CharField(max_length=255, db_index=True, null=False)
+    price = models.IntegerField()
     remark = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
