@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'inventory.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+DATABASE_URL = 'postgres://mcyofhxlfincgw:f492e42b5661decb54a9f9c1198b4397baaede7cc3c6a312e01bc7ca629b76b7@ec2-52-5-1-20.compute-1.amazonaws.com:5432/d8bvigtcf4pi4i'
 DATABASES = {
-     'default': dj_database_url.config(conn_max_age=600,ssl_require=True)
+     'default': dj_database_url.config(default=DATABASE_URL)
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -125,5 +125,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
+# STATICFILES_STORAGE= 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 AUTH_USER_MODEL = 'users.User'
