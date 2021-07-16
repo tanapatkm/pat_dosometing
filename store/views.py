@@ -53,10 +53,43 @@ def create_supplier(request):
     return render(request, 'store/addSupplier.html', context)
 
 
-class SupplierListView(ListView):
-    model = Employee
-    template_name = 'store/supplier_list.html'
-    context_object_name = 'supplier'
+def show_all_emp(request):
+    all_emp = Employee.objects.all()
+    context = {'supplier':all_emp}
+    return render(request,'store/supplier_list.html',context)
+
+@login_required(login_url='login')
+def delete_emp(request,emp_id):
+    emp = Employee.objects.filter(id=emp_id).first()
+    emp.delete()
+    return HttpResponseRedirect("/store/supplier-list/")
+
+@login_required(login_url='login')
+def update_emp(request,emp_id):
+    emp = Employee.objects.filter(id=emp_id).first()
+    if emp == None:
+        return HttpResponse("EMP_id "+str(emp_id) )
+    context = {'emp':emp}
+    return render(request,"store/editEmp.html",context)
+
+def edit_emp(request):
+    if request.method !="POST":
+        return HttpResponse("Wrong Method")
+    emp = Employee.objects.filter(id=request.POST.get('id')).first()
+    if not emp:
+        return HttpResponse("Not Found")
+    emp.name = request.POST.get('name','')
+    emp.tel = request.POST.get('tel','')
+    emp.is_in_thai = request.POST.get('is_in_thai')
+    print(request.POST.get('is_in_thai'))
+    print(request.POST.get('is_in_china'))
+    if not emp.is_in_thai:
+        emp.is_in_thai = False
+    emp.is_in_china = request.POST.get('is_in_china')
+    if not emp.is_in_china:
+        emp.is_in_china = False
+    emp.save()
+    return HttpResponseRedirect("/store/supplier-list/")
 
 
 # Buyer views

@@ -43,9 +43,14 @@
                             <tr>
                                 <th class="serial">#</th>
                                 <th>Name</th>
-                                <th>Address</th>
+                                <th>tel</th>
+                                <th>In Thai</th>
+                                <th>In China</th>
                                 <th>Email</th>
                                 <th>Date</th>
+                                <th></th>
+                                <th></th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -54,9 +59,13 @@
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
                                 <td>{{ supplier.name }}</td>
-                                <td>{{ supplier.address }}</td>
+                                <td>{{ supplier.tel }}</td>
+                                <td>{{ supplier.is_in_thai }}</td>
+                                <td>{{ supplier.is_in_china }}</td>
                                 <td>{{ supplier.user.email }}</td>
                                 <td>{{ supplier.created_date }}</td>
+                                <td><a href="{% url 'update-emp' supplier.id %}">Update </a></td>
+                                <td><a href="{% url 'delete-emp' supplier.id %}">DELETE</a></td>
                             </tr>
                             {% endfor %}
                             {% else %}

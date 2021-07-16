@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Add Supplier{% endblock title %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Supplier</a></li>
+                            <li class="active">Add</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Add Supplier</strong>
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action={% url 'edit-emp'%} method="post" novalidate="novalidate">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id" class="control-label mb-1">Id</label>
+                                <input type="text" name="id" class="form-control" value="{{ emp.id }} "readonly>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="name" class="control-label mb-1">name</label>
+                                        <input type="text" name="name" class="form-control" value="{{ emp.name  }}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="tel" class="control-label mb-1">tel</label>
+                                        <input type="text" name="tel" class="form-control" value="{{ emp.tel  }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="is_in_thai" class="control-label mb-1">is_in_thai</label>
+                                        <input type="checkbox" name="is_in_thai" class="form-control" value=True>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="is_in_china" class="control-label mb-1">is_in_china</label>
+                                        <input type="checkbox" name="is_in_china" class="form-control" value="True">
+                                    </div>
+                                </div>
+
+
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-success btn-block">
+                                    <span id="payment-button-amount">Save</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
+</div>
+{% endblock content %}
