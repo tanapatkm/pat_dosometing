@@ -19,7 +19,7 @@
                         <ol class="breadcrumb text-right">
                             <li><a href="#">Dashboard</a></li>
                             <li><a href="#">Buyer</a></li>
-                            <li class="active">Add</li>
+                            <li class="active">Update</li>
                         </ol>
                     </div>
                 </div>
@@ -34,80 +34,75 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <strong class="card-title">Add Buyer</strong>
+                <strong class="card-title">Update Buyer</strong>
             </div>
             <div class="card-body">
                 <!-- Credit Card -->
                 <div id="pay-invoice">
                     <div class="card-body">
-                        <form action="#" method="post" novalidate="novalidate">
+                        <form action={% url 'edit-buyer'%} method="post" novalidate="novalidate">
                             {% csrf_token %}
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Full Name</label>
-                                {{ form.name }}
-                            </div>
+
                             <div class="row">
                                 <div class="col-6">
                             <div class="form-group">
-                                <label for="client_id" class="control-label mb-1">client_id</label>
-                                {{ form.client_id }}
-                                    </div>
+                                <label for="id" class="control-label mb-1">Id</label>
+                                <input type="text" name="id" class="form-control" value="{{ buyer.id }} "readonly>
+                            </div>
                                 </div>
                                 <div class="col-6">
-                            <div class="form-group">
-                                <label for="line_id" class="control-label mb-1">line_id</label>
-                                {{ form.line_id }}
+                                    <div class="form-group">
+                                        <label for="name" class="control-label mb-1">Full Name</label>
+                                        <input type="text" name="name" class="form-control" value="{{ buyer.name }}">
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="address" class="control-label mb-1">Address</label>
-                                {{ form.address }}
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="address" class="control-label mb-1">zipcode</label>
-                                {{ form.zipcode }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="email" class="control-label mb-1">Email Address</label>
-                                {{ form.email }}
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="tel" class="control-label mb-1">tel</label>
-                                {{ form.tel }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="username" class="control-label mb-1">Username</label>
-                                {{ form.username }}
-                            </div>
+
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="password" class="control-label mb-1">Password</label>
-                                        {{ form.password }}
+                                        <label for="client_id" class="control-label mb-1">client_id</label>
+                                        <input type="text" name="client_id" class="form-control" value="{{ buyer.client_id }}">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="retype_password" class="control-label mb-1">Confirm Password</label>
-                                        {{ form.retype_password }}
+                                        <label for="line_id" class="control-label mb-1">line_id</label>
+                                        <input type="text" name="line_id" class="form-control" value="{{ buyer.line_id }}">
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="address" class="control-label mb-1">Address</label>
+                                        <input type="text" name="address" class="form-control" value="{{ buyer.address }}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="zipcode" class="control-label mb-1">zipcode</label>
+                                        <input type="text" name="zipcode" class="form-control" value="{{ buyer.zipcode }}">
+                                    </div>
+                                </div>
+                            </div>
+                              <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="email" class="control-label mb-1">Email Address</label>
+                                        <input type="email" name="email" class="form-control" value="{{ buyer.email }}">
+                                    </div>
+                                </div>
+                                  <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="tel" class="control-label mb-1">tel</label>
+                                        <input type="text" name="tel" class="form-control" value="{{ buyer.tel }}">
+                                    </div>
+                                </div>
+                              </div>
                             <div>
-                                <button id="payment-button" type="submit" class="btn btn-lg btn-success btn-block">
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-success btn-block" value="Edit Buyer">
                                     <span id="payment-button-amount">Save</span>
                                 </button>
                             </div>

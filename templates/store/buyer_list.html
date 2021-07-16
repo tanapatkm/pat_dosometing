@@ -42,10 +42,17 @@
                         <thead>
                             <tr>
                                 <th class="serial">#</th>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>Email</th>
-                                <th>Date</th>
+                                <th> Id </th>
+                                <th> Client Id </th>
+                                <th> Name </th>
+                                <th> Line_Id </th>
+                                <th> ADDRESS </th>
+                                <th> ZIPCODE </th>
+                                <th> TEL </th>
+                                <th> EMAIL </th>
+                                <th> CREATED_DATE</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,10 +60,17 @@
                             {% for buyer in buyer %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
+                                <td>{{ buyer.id }}</td>
+                                <td>{{ buyer.client_id }}</td>
                                 <td>{{ buyer.name }}</td>
+                                <td>{{ buyer.line_id }}</td>
                                 <td>{{ buyer.address }}</td>
-                                <td>{{ buyer.user.email }}</td>
+                                <td>{{ buyer.zipcode }}</td>
+                                <td>{{ buyer.tel }}</td>
+                                <td>{{ buyer.email }}</td>
                                 <td>{{ buyer.created_date }}</td>
+                                <td><a href="{% url 'update-buyer' buyer.id %}">Update </a></td>
+                                <td><a href="{% url 'delete-buyer' buyer.id %}">DELETE</a></td>
                             </tr>
                             {% endfor %}
                             {% else %}

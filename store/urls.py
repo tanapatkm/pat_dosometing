@@ -10,12 +10,18 @@ from .views import (
     create_warehouse,
 
     SupplierListView,
-    BuyerListView,
+    show_all_buyer,
     DropListView,
     ProductListView,
     OrderListView,
     DeliveryListView,
-    WarehouseListView
+    WarehouseListView,
+
+    update_buyer,
+
+    edit_buyer,
+
+    delete_buyer
 )
 
 urlpatterns = [
@@ -28,11 +34,15 @@ urlpatterns = [
     path('create-warehouse/', create_warehouse, name='create-warehouse'),
 
     path('supplier-list/', SupplierListView.as_view(), name='supplier-list'),
-    path('buyer-list/', BuyerListView.as_view(), name='buyer-list'),
+    path('buyer-list/', show_all_buyer, name='buyer-list'),
     path('drop-list/', DropListView.as_view(), name='drop-list'),
     path('product-list/', ProductListView.as_view(), name='product-list'),
     path('order-list/', OrderListView.as_view(), name='order-list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     path('warehouse-list/', WarehouseListView.as_view(), name='warehouse-list'),
+
+    path('delete_buyer/<int:buyer_id>',delete_buyer, name='delete-buyer'),
+    path('update_buyer/<int:buyer_id>',update_buyer, name='update-buyer'),
+    path('edit_buyer', edit_buyer, name='edit-buyer'),
 
 ]

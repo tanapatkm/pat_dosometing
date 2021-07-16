@@ -3,18 +3,24 @@ from django import forms
 from .models import  *
 
 
-class SupplierForm(forms.Form):
+class EmployeeForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'name',
         'data-val': 'true',
         'data-val-required': 'Please enter name',
     }))
-    address = forms.CharField(widget=forms.TextInput(attrs={
+    is_in_thai = forms.BooleanField(widget=forms.CheckboxInput(attrs={
         'class': 'form-control',
         'id': 'address',
         'data-val': 'true',
-        'data-val-required': 'Please enter address',
+        'data-val-required': 'Please enter tel',
+    }))
+    tel = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'tel',
+        'data-val': 'true',
+        'data-val-required': 'Please enter telephone',
     }))
     email = forms.CharField(widget=forms.EmailInput(attrs={
         'class': 'form-control',
@@ -48,11 +54,32 @@ class BuyerForm(forms.Form):
         'data-val': 'true',
         'data-val-required': 'Please enter name',
     }))
+    client_id = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'client_id',
+        'data-val': 'true',
+        'data-val-required': 'Please enter client_id',
+    }))
+    line_id = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'line_id',
+        'data-val': 'true',
+    }))
     address = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'id': 'address',
+        'id': 'client_id',
         'data-val': 'true',
         'data-val-required': 'Please enter address',
+    }))
+    tel = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'client_id',
+        'data-val': 'true',
+    }))
+    zipcode = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'client_id',
+        'data-val': 'true',
     }))
     email = forms.CharField(widget=forms.EmailInput(attrs={
         'class': 'form-control',
@@ -78,7 +105,6 @@ class BuyerForm(forms.Form):
         'data-val': 'true',
         'data-val-required': 'Please enter retype_password',
     }))
-
 
 
 class DropForm(forms.ModelForm):

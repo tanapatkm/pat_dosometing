@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Supplier,
+    Employee,
     Buyer,
     Drop,
     Product,
@@ -10,12 +10,12 @@ from .models import (
 )
 
 class SupplierAdmin(admin.ModelAdmin):
-    list_display = ['user', 'name', 'address', 'created_date']
+    list_display = ['user', 'name', 'tel', 'created_date']
 
 class BuyerAdmin(admin.ModelAdmin):
     list_display = ['user', 'name', 'address', 'created_date']
 
-admin.site.register(Supplier, SupplierAdmin)
+admin.site.register(Employee, SupplierAdmin)
 admin.site.register(Buyer, BuyerAdmin)
 admin.site.register(Drop)
 admin.site.register(Product)
