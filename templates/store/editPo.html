@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Add Supplier{% endblock title %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>Dashboard</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">Supplier</a></li>
+                                <li class="active">Add</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title">Add Supplier</strong>
+                </div>
+                <div class="card-body">
+                    <!-- Credit Card -->
+                    <div id="pay-invoice">
+                        <div class="card-body">
+                            <form action={% url 'edit-emp' %} method="post" novalidate="novalidate">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="po_number" class="control-label mb-1">Id</label>
+                                    <input type="text" name="po_number" class="form-control"
+                                           value="{{ po.po_number }} ">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="type" class="control-label mb-1">name</label>
+                                            <input type="text" name="type" class="form-control" value="{{ po.type }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="is_paid" class="control-label mb-1">tel</label>
+                                            <input type="checkbox" name="is_paid" class="form-control" value=True>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="shipping_by" class="control-label mb-1">shipping_by</label>
+                                            <input type="text" name="shipping_by" class="form-control"
+                                                   value={{ po.shipping_by }}>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="track_no" class="control-label mb-1">track_no</label>
+                                            <input type="text" name="track_no" class="form-control"
+                                                   value={{ po.track_no }}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="price" class="control-label mb-1">Id</label>
+                                    <input type="number" name="price" class="form-control"
+                                           value="{{ po.price }} ">
+                                </div>
+
+
+                                <div>
+                                    <button id="payment-button" type="submit" class="btn btn-lg btn-success btn-block">
+                                        <span id="payment-button-amount">Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div> <!-- .card -->
+
+        </div><!--/.col-->
+    </div>
+{% endblock content %}

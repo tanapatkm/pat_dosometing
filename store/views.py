@@ -3,27 +3,11 @@ from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from users.models import User
-from .models import (
-    Employee,
-    Buyer,
-    Drop,
-    Product,
-    Order,
-    Delivery,
-    Warehouse
-)
-from .forms import (
-    EmployeeForm,
-    BuyerForm,
-    DropForm,
-    ProductForm,
-    OrderForm,
-    DeliveryForm,
-    WarehouseForm
-)
+from .models import *
+from .forms import *
 
 
-# Supplier views
+# EMP views
 @login_required(login_url='login')
 def create_supplier(request):
     forms = EmployeeForm()
@@ -81,8 +65,6 @@ def edit_emp(request):
     emp.name = request.POST.get('name','')
     emp.tel = request.POST.get('tel','')
     emp.is_in_thai = request.POST.get('is_in_thai')
-    print(request.POST.get('is_in_thai'))
-    print(request.POST.get('is_in_china'))
     if not emp.is_in_thai:
         emp.is_in_thai = False
     emp.is_in_china = request.POST.get('is_in_china')
@@ -279,3 +261,60 @@ class WarehouseListView(ListView):
     model = Warehouse
     template_name = 'store/warehouse_list.html'
     context_object_name = 'warehouse'
+
+#
+def show_all_po(request):
+    all_po = PurchaseOrder.objects.all()
+    context = {'pos':all_po}
+    return render(request,'store/po_list.html',context)
+
+
+@login_required(login_url='login')
+def create_po(request):
+    forms = PoForm()
+    if request.method == 'POST':
+        forms = PoForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('po-list')
+    context = {
+        'form': forms
+    }
+    return render(request, 'store/addPo.html', context)
+
+@login_required(login_url='login')
+def update_po(request,po_id):
+    po = PurchaseOrder.objects.filter(po_id=po_id).first()
+    if po == None:
+        return HttpResponse("po_id "+str(po_id) )
+    context = {'po':po}
+    return render(request,"store/editPo.html",context)
+
+@login_required(login_url='login')
+def edit_po(request,po_id):
+    if request.method != "POST":
+        return HttpResponse("Wrong Method")
+    po = PurchaseOrder.objects.filter(po_id=request.POST.get('po_id')).first()
+    if not po:
+        return HttpResponse("Not Found")
+    po.po_number = request.POST.get('po_number', '')
+    po.type = request.POST.get('type', '')
+    po.is_paid = request.POST.get('is_paid', '')
+    po.shipping_by = request.POST.get('shipping_by', '')
+    po.track_no = request.POST.get('track_no', '')
+    po.price = request.POST.get('price', '')
+    po.buyer = request.POST.get('buyer', '')
+    po.warehouse = request.POST.get('warehouse', '')
+    po.save()
+    return HttpResponseRedirect("/store/po-list/")
+
+
+@login_required(login_url='login')
+def delete_po(request,po_id):
+    obj = get_object_or_404(PurchaseOrder,po_id = po_id)
+    if request.method == "GET":
+        # delete object
+        obj.delete()
+        # after deleting redirect to
+        # home page
+    return redirect('po-list')

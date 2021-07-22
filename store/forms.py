@@ -115,8 +115,6 @@ class DropForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'id': 'name'})
         }
 
-
-
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -165,13 +163,30 @@ class WarehouseForm(forms.ModelForm):
 class PoForm(forms.ModelForm):
     class Meta:
         model = PurchaseOrder
-        fields = ['type', 'status', 'is_paid', 'shipping_by', 'price', 'sack_id','buyer']
+        fields = ['po_number','type', 'is_paid', 'shipping_by','track_no', 'price','buyer', 'warehouse']
 
         widgets = {
-            'supplier': forms.Select(attrs={'class': 'form-control', 'id': 'supplier'}),
-            'product': forms.Select(attrs={'class': 'form-control', 'id': 'product'}),
+            'po_number': forms.TextInput(attrs={'class': 'form-control', 'id': 'po_number'}),
+            'type': forms.TextInput(attrs={'class': 'form-control', 'id': 'type'}),
+            'is_paid': forms.CheckboxInput(attrs={'class': 'form-control', 'id': 'is_paid'}),
             'shipping_by': forms.TextInput(attrs={'class': 'form-control', 'id': 'shipping_by'}),
+            'track_no': forms.TextInput(attrs={'class': 'form-control', 'id': 'tracking_no'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'id': 'price'}),
-            'sack_id': forms.Select(attrs={'class': 'form-control', 'id': 'sack_id'}),
             'buyer': forms.Select(attrs={'class': 'form-control', 'id': 'buyer'}),
+            'warehouse': forms.Select(attrs={'class': 'form-control', 'id': 'warehouse'}),
         }
+# class PoProduct(forms.ModelForm):
+#     class Meta:
+#         model = PurchaseOrderProduct
+#         fields = ['']
+#
+#         widgets = {
+#             'po_number': forms.TextInput(attrs={'class': 'form-control', 'id': 'po_number'}),
+#             'type': forms.TextInput(attrs={'class': 'form-control', 'id': 'type'}),
+#             'is_paid': forms.CheckboxInput(attrs={'class': 'form-control', 'id': 'is_paid'}),
+#             'shipping_by': forms.TextInput(attrs={'class': 'form-control', 'id': 'shipping_by'}),
+#             'track_no': forms.TextInput(attrs={'class': 'form-control', 'id': 'tracking_no'}),
+#             'price': forms.NumberInput(attrs={'class': 'form-control', 'id': 'price'}),
+#             'buyer': forms.Select(attrs={'class': 'form-control', 'id': 'buyer'}),
+#             'warehouse': forms.Select(attrs={'class': 'form-control', 'id': 'warehouse'}),
+#         }

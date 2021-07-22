@@ -119,31 +119,31 @@ class PurchaseOrder(models.Model):
         (OWNER, 'Owner Shipping'),
         (SERVICE, 'SHIPPING PROVIDER'),
     ]
-    INTRANSIT = 'INTRANSIT'
-    CANCELLED = 'CANCELLED'
-    DELIVERIED ='DELIVERIED'
-    INBOUND ='INBOUNED'
-    PENDING ='PENDING'
+
+    INTRANSIT_CHINA = 'INTRANSIT_CHINA'
+    INTRANSIT_THAI = 'INTRANSIT_THAI'
+    OUTBOUND_THAI ='OUTBOUND_THAI'
     STATUS = [
-        (INTRANSIT,'in_transit'),
-        (CANCELLED,'cancelled'),
-        (DELIVERIED, 'cancelled'),
-        (INBOUND, 'inbound'),
-        (PENDING, 'pending'),
+        (INTRANSIT_CHINA,'intransit_china'),
+        (INTRANSIT_THAI,'intransit_thai'),
+        (OUTBOUND_THAI, 'outbound_thai'),
 
     ]
     po_id = models.BigAutoField(primary_key=True)
+    po_number = models.CharField(max_length=255,db_index=True,null=False)
     type = models.CharField(max_length=255, db_index=True, null=False)
-    status = models.CharField(max_length=255, choices=STATUS, null=False, default=INBOUND)
+    status = models.CharField(max_length=255, choices=STATUS, null=False, default=INTRANSIT_CHINA)
     is_paid = models.BooleanField(default=False)
     shipping_by = models.CharField(max_length=25, choices=SHIPPING_CHOICES, null=False, default=OWNER)
     is_dirty = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True, db_index=True)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(default=0,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-    sack_id = models.ForeignKey(Shipment, on_delete=models.PROTECT, related_name='containers')
+    track_no = models.CharField(max_length=255,null=True)
+    sack_id = models.ForeignKey(Shipment, on_delete=models.PROTECT, related_name='containers',null=True)
     buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE, null=True,related_name='buyer')
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, null=True,related_name='warehouse')
 
 
 
@@ -157,7 +157,18 @@ class PurchaseOrderProduct(models.Model):
     lenght = models.CharField(max_length=255, db_index=True, null=False)
     height = models.CharField(max_length=255, db_index=True, null=False)
     price = models.IntegerField(default=0)
+    image = models.ImageField()
     remark = models.TextField(null=True,blank=True)
+    is_ready =models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+class QrProduct(models.Model):
+    product_id = models.ForeignKey(PurchaseOrderProduct,on_delete=models.PROTECT,related_name='po_product')
+    qr_code = models.ImageField()
+    is_inbound_thai = models.BooleanField(default=False)
+    is_outbound_china = models.BooleanField(default=False)
+    is_outbound_thai = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 

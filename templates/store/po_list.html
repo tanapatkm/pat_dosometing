@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Supplier List{% endblock title %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Supplier</a></li>
+                            <li class="active">List</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="box-title">Po List </h4>
+            </div>
+            <div class="card-body--">
+                <div class="table-stats order-table ov-h">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th class="serial">#</th>
+                                <th>po_number</th>
+                                <th>type</th>
+                                <th>status</th>
+                                <th>shipping_by</th>
+                                <th>price</th>
+                                <th>buyer</th>
+                                <th>sack_id</th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if pos %}
+                            {% for po in pos %}
+                            <tr>
+                                <td class="serial">{{ po.po_id }}</td>
+                                <td>{{ po.po_number }}</td>
+                                <td>{{ po.type }}</td>
+                                <td>{{ po.status }}</td>
+                                <td>{{ po.shipping_by }}</td>
+                                <td>{{ po.price }}</td>
+                                <td>{{ po.buyer }}</td>
+                                <td>{{ po.sack_id }}</td>
+                                <td><a href="{% url 'update-po' po.po_id %}">Update </a></td>
+                                <td><a href="{% url 'delete-po' po.po_id %}">DELETE</a></td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                                <tr><td>No Po Data</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div> <!-- /.table-stats -->
+            </div>
+        </div> <!-- /.card -->
+    </div>  <!-- /.col-lg-8 -->
+
+    
+</div>
+{% endblock content %}
