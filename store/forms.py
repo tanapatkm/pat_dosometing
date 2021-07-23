@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import modelformset_factory
 
 from .models import  *
 
@@ -160,6 +161,39 @@ class WarehouseForm(forms.ModelForm):
             'locations': forms.TextInput(attrs={'class': 'form-control', 'id': 'locations'}),
         }
 
+class PackinglistForm(forms.ModelForm):
+    class Meta:
+        model = Packinglist
+        fields = ['status']
+
+        widgets = {
+            'status': forms.CheckboxInput(attrs={'class': 'form-control', 'id': 'status'}),
+        }
+ShipmentFormset = modelformset_factory(
+    Shipment,
+    fields=('id', ),
+    extra=1,
+    widgets={
+        'id': forms.Select(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Select Shipment'
+            }
+        )
+    }
+)
+
+class ShipmentForm(forms.ModelForm):
+    class Meta:
+        model = Shipment
+        fields = ['status', 'packing_id']
+
+        widgets = {
+            'status': forms.CheckboxInput(attrs={'class': 'form-control', 'id': 'status'}),
+            'packing_id': forms.Select(attrs={'class': 'form-control', 'id': 'packing_id'}),
+        }
+
+
 class PoForm(forms.ModelForm):
     class Meta:
         model = PurchaseOrder
@@ -175,6 +209,23 @@ class PoForm(forms.ModelForm):
             'buyer': forms.Select(attrs={'class': 'form-control', 'id': 'buyer'}),
             'warehouse': forms.Select(attrs={'class': 'form-control', 'id': 'warehouse'}),
         }
+PoProductFormset = modelformset_factory(
+    PurchaseOrderProduct,
+    fields=('brand','packing_type','canton','weight','wight','lenght','height','price','image','remark'),
+    extra=1,
+    widgets={
+        'brand': forms.TextInput(attrs={'class': 'form-control', 'id': 'brand'}),
+        'packing_type': forms.TextInput(attrs={'class': 'form-control', 'id': 'packing_type'}),
+        'canton': forms.NumberInput(attrs={'class': 'form-control', 'id': 'canton'}),
+        'weight': forms.NumberInput(attrs={'class': 'form-control', 'id': 'weight'}),
+        'wight': forms.NumberInput(attrs={'class': 'form-control', 'id': 'wight'}),
+        'lenght': forms.NumberInput(attrs={'class': 'form-control', 'id': 'lenght'}),
+        'height': forms.NumberInput(attrs={'class': 'form-control', 'id': 'height'}),
+        'price': forms.NumberInput(attrs={'class': 'form-control', 'id': 'price'}),
+        'remark': forms.TextInput(attrs={'class': 'form-control', 'id': 'po_number'}),
+
+    }
+        )
 # class PoProduct(forms.ModelForm):
 #     class Meta:
 #         model = PurchaseOrderProduct

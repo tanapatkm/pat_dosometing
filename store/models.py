@@ -97,6 +97,7 @@ class Warehouse(models.Model):
 
 class Packinglist(models.Model):
     packing_id = models.BigAutoField(primary_key=True)
+    status = models.BooleanField(max_length=255, default=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_dirty = models.BooleanField(default=True)
@@ -104,8 +105,7 @@ class Packinglist(models.Model):
 
 
 class Shipment(models.Model):
-    type = models.CharField(max_length=255, db_index=True, null=False)
-    status = models.CharField(max_length=255, db_index=True, null=False)
+    status = models.BooleanField(max_length=255,default=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_dirty = models.BooleanField(default=True)
@@ -157,11 +157,12 @@ class PurchaseOrderProduct(models.Model):
     lenght = models.CharField(max_length=255, db_index=True, null=False)
     height = models.CharField(max_length=255, db_index=True, null=False)
     price = models.IntegerField(default=0)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images')
     remark = models.TextField(null=True,blank=True)
-    is_ready =models.BooleanField(default=False)
+    is_ready =models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    po_id = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE, null=True,related_name='po')
 
 class QrProduct(models.Model):
     product_id = models.ForeignKey(PurchaseOrderProduct,on_delete=models.PROTECT,related_name='po_product')

@@ -1,109 +1,208 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Add Buyer{% endblock title %}
+{% block title %}Add Po{% endblock title %}
 
 {% block breadcrumbs %}
-<div class="breadcrumbs">
-    <div class="breadcrumbs-inner">
-        <div class="row m-0">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1>Dashboard</h1>
+    <div class="breadcrumbs">
+        <div class="breadcrumbs-inner">
+            <div class="row m-0">
+                <div class="col-sm-4">
+                    <div class="page-header float-left">
+                        <div class="page-title">
+                            <h1>Dashboard</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Buyer</a></li>
-                            <li class="active">Add</li>
-                        </ol>
+                <div class="col-sm-8">
+                    <div class="page-header float-right">
+                        <div class="page-title">
+                            <ol class="breadcrumb text-right">
+                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">Buyer</a></li>
+                                <li class="active">Add</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock breadcrumbs %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Add Buyer</strong>
-            </div>
-            <div class="card-body">
-                <!-- Credit Card -->
-                <div id="pay-invoice">
-                    <div class="card-body">
-                        <form action="#" method="post" novalidate="novalidate">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">po_number</label>
-                                {{ form.po_number }}
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="client_id" class="control-label mb-1">type</label>
-                                {{ form.type }}
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="is_paid" class="control-label mb-1">is_paid</label>
-                                {{ form.is_paid }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="shipping_by" class="control-label mb-1">shipping_by</label>
-                                {{ form.shipping_by }}
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="track_no" class="control-label mb-1">track_no</label>
-                                {{ form.track_no }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="price" class="control-label mb-1">price</label>
-                                {{ form.price }}
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                            <div class="form-group">
-                                <label for="buyer" class="control-label mb-1">buyer</label>
-                                {{ form.buyer }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="warehouse" class="control-label mb-1">warehouse</label>
-                                {{ form.warehouse }}
-                            </div>
-                            <div>
-                                <button id="payment-button" type="submit" class="btn btn-lg btn-success btn-block">
-                                    <span id="payment-button-amount">Save</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title">Add Buyer</strong>
                 </div>
+                <div class="card-body">
+                    <!-- Credit Card -->
+                    <div id="pay-invoice">
+                        <div class="card-body">
+                            <form action="#" method="post" novalidate="novalidate">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="po_number" class="control-label mb-1">po_number</label>
+                                    {{ poform.po_number }}
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="client_id" class="control-label mb-1">type</label>
+                                            {{ poform.type }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="is_paid" class="control-label mb-1">is_paid</label>
+                                            {{ poform.is_paid }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="shipping_by" class="control-label mb-1">shipping_by</label>
+                                            {{ poform.shipping_by }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="track_no" class="control-label mb-1">track_no</label>
+                                            {{ poform.track_no }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="price" class="control-label mb-1">price</label>
+                                            {{ poform.price }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="buyer" class="control-label mb-1">buyer</label>
+                                            {{ poform.buyer }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="warehouse" class="control-label mb-1">warehouse</label>
+                                    {{ poform.warehouse }}
+                                </div>
+                                {{ formset.management_form }}
+                                {% for form in formset %}
+                                    <div class="row form-row spacer">
+                                        <div class="col-4">
+                                            <label>{{ form.brand.label }}</label>
+                                            <label>{{ form.packing_type.label }}</label>
+                                            <label>{{ form.canton.label }}</label>
+                                            <label>{{ form.weight.label }}</label>
+                                            <label>{{ form.wight.label }}</label>
+                                            <label>{{ form.lenght.label }}</label>
+                                            <label>{{ form.height.label }}</label>
+                                            <label>{{ form.price.label }}</label>
+                                            <label>{{ form.image.label }}</label>
+                                            <label>{{ form.remark.label }}</label>
 
-            </div>
-        </div> <!-- .card -->
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                {{ form.brand }}
+                                                {{ form.packing_type }}
+                                                {{ form.canton }}
+                                                {{ form.weight }}
+                                                {{ form.wight }}
+                                                {{ form.lenght }}
+                                                {{ form.height }}
+                                                {{ form.price }}
+                                                {{ form.image }}
+                                                {{ form.remark }}
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-success add-form-row">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div>
+                                    <button id="payment-button" type="submit" class="btn btn-lg btn-success btn-block">
+                                        <span id="payment-button-amount">Save</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
-    </div><!--/.col-->
-</div>
+                </div>
+            </div> <!-- .card -->
+
+        </div><!--/.col-->
+    </div>
 {% endblock content %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script type="text/javascript">
+function updateElementIndex(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+)');
+    var replacement = prefix + '-' + ndx;
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
+}
+function cloneMore(selector, prefix) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+        var name = $(this).attr('name')
+        if(name) {
+            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        }
+    });
+    newElement.find('label').each(function() {
+        var forValue = $(this).attr('for');
+        if (forValue) {
+          forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+          $(this).attr({'for': forValue});
+        }
+    });
+    total++;
+    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+    var conditionRow = $('.form-row:not(:last)');
+    conditionRow.find('.btn.add-form-row')
+    .removeClass('btn-success').addClass('btn-danger')
+    .removeClass('add-form-row').addClass('remove-form-row')
+    .html('-');
+    return false;
+}
+function deleteForm(prefix, btn) {
+    var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+    if (total > 1){
+        btn.closest('.form-row').remove();
+        var forms = $('.form-row');
+        $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).find(':input').each(function() {
+                updateElementIndex(this, prefix, i);
+            });
+        }
+    }
+    return false;
+}
+$(document).on('click', '.add-form-row', function(e){
+    e.preventDefault();
+    cloneMore('.form-row:last', 'form');
+    return false;
+});
+$(document).on('click', '.remove-form-row', function(e){
+    e.preventDefault();
+    deleteForm('form', $(this));
+    return false;
+});
+
+</script>

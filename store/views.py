@@ -269,18 +269,42 @@ def show_all_po(request):
     return render(request,'store/po_list.html',context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
+# def create_po(request):
+#     forms = PoForm()
+#     if request.method == 'POST':
+#         forms = PoForm(request.POST)
+#         if forms.is_valid():
+#             forms.save()
+#             return redirect('po-list')
+#     context = {
+#         'form': forms
+#     }
+#     return render(request, 'store/addPo.html', context)
+
 def create_po(request):
-    forms = PoForm()
-    if request.method == 'POST':
-        forms = PoForm(request.POST)
-        if forms.is_valid():
-            forms.save()
+    template_name = 'store/addPo.html'
+    if request.method == 'GET':
+        poform = PoForm(request.GET or None)
+        formset = PoProductFormset(queryset=PurchaseOrderProduct.objects.none())
+    elif request.method == 'POST':
+        poform = PoForm(request.POST)
+        formset = PoProductFormset(request.POST)
+        if poform.is_valid()and formset.is_valid():
+            print('come')
+            # first save this book, as its reference will be used in `Author`
+            po = poform.save()
+            for form in formset:
+                # so that `book` instance can be attached.
+                po_product = form.save()
+                po_product.po_id = po
+                po_product.save()
             return redirect('po-list')
-    context = {
-        'form': forms
-    }
-    return render(request, 'store/addPo.html', context)
+    return render(request, template_name, {
+        'poform': poform,
+        'formset': formset,
+    })
+
 
 @login_required(login_url='login')
 def update_po(request,po_id):
@@ -291,7 +315,7 @@ def update_po(request,po_id):
     return render(request,"store/editPo.html",context)
 
 @login_required(login_url='login')
-def edit_po(request,po_id):
+def edit_po(request):
     if request.method != "POST":
         return HttpResponse("Wrong Method")
     po = PurchaseOrder.objects.filter(po_id=request.POST.get('po_id')).first()
@@ -299,12 +323,10 @@ def edit_po(request,po_id):
         return HttpResponse("Not Found")
     po.po_number = request.POST.get('po_number', '')
     po.type = request.POST.get('type', '')
-    po.is_paid = request.POST.get('is_paid', '')
+    po.is_paid = request.POST.get('is_paid', False)
     po.shipping_by = request.POST.get('shipping_by', '')
     po.track_no = request.POST.get('track_no', '')
-    po.price = request.POST.get('price', '')
-    po.buyer = request.POST.get('buyer', '')
-    po.warehouse = request.POST.get('warehouse', '')
+    po.price = request.POST.get('price', 0)
     po.save()
     return HttpResponseRedirect("/store/po-list/")
 
