@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'inventory.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASE_URL = 'postgres://mcyofhxlfincgw:f492e42b5661decb54a9f9c1198b4397baaede7cc3c6a312e01bc7ca629b76b7@ec2-52-5-1-20.compute-1.amazonaws.com:5432/d8bvigtcf4pi4i'
-# DATABASE_URL='postgres://patinwza@localhost:5432/pat_lcl'
+# DATABASE_URL = 'postgres://mcyofhxlfincgw:f492e42b5661decb54a9f9c1198b4397baaede7cc3c6a312e01bc7ca629b76b7@ec2-52-5-1-20.compute-1.amazonaws.com:5432/d8bvigtcf4pi4i'
+DATABASE_URL='postgres://patinwza@localhost:5432/pat_lcl'
 
 DATABASES = {
      'default': dj_database_url.config(default=DATABASE_URL)
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
 

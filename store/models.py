@@ -97,21 +97,34 @@ class Warehouse(models.Model):
 
 class Packinglist(models.Model):
     packing_id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=255,null=False,default='')
     status = models.BooleanField(max_length=255, default=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_dirty = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True, db_index=True)
 
+    def __str__(self):
+        return self.name
 
 class Shipment(models.Model):
-    status = models.BooleanField(max_length=255,default=False, null=False)
+    ACTIVE = 'ACTIVE'
+    INACTIVE = 'INACTIVE'
+    STATUS = [
+        (ACTIVE, 'active'),
+        (INACTIVE, 'inactive'),
+
+    ]
+    name = models.CharField(max_length=255,null=False,default='')
+    status = models.CharField(max_length=255, choices=STATUS, null=False, default=ACTIVE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_dirty = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True, db_index=True)
-    packing_id = models.ForeignKey(Packinglist, on_delete=models.PROTECT, related_name='packing_list')
+    packing_id = models.ForeignKey(Packinglist, on_delete=models.PROTECT, related_name='packing_list',null=True)
 
+    def __str__(self):
+        return self.name
 class PurchaseOrder(models.Model):
     OWNER = 'OWNER'
     SERVICE = 'SHIPPING PROVIDER'
@@ -144,6 +157,9 @@ class PurchaseOrder(models.Model):
     sack_id = models.ForeignKey(Shipment, on_delete=models.PROTECT, related_name='containers',null=True)
     buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE, null=True,related_name='buyer')
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, null=True,related_name='warehouse')
+
+    def __str__(self):
+        return self.po_number
 
 
 

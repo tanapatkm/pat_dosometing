@@ -24,6 +24,14 @@
                 </li>
 
                 <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-truck"></i>Shipment</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-plus-circle" style="color: darkblue"></i><a href="{% url 'create-ship' %}">Add</a></li>
+                        <li><i class="fa fa-eye" style="color: darkblue"></i><a href="{% url 'ship-list' %}">View</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tags"></i>Po</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fa fa-plus-circle" style="color: darkblue"></i><a href="{% url 'create-po' %}">Add</a></li>

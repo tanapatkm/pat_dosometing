@@ -5,6 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from users.models import User
 from .models import *
 from .forms import *
+from django.forms import inlineformset_factory
 
 
 # EMP views
@@ -84,6 +85,7 @@ def create_buyer(request):
             name = forms.cleaned_data['name']
             address = forms.cleaned_data['address']
             email = forms.cleaned_data['email']
+            client_id = forms.cleaned_data['client_id']
             line_id = forms.cleaned_data['line_id']
             tel = forms.cleaned_data['tel']
             zipcode = forms.cleaned_data['zipcode']
@@ -92,7 +94,7 @@ def create_buyer(request):
             retype_password = forms.cleaned_data['retype_password']
             if password == retype_password:
                 user = User.objects.create_user(username=username, password=password, email=email, is_buyer=True)
-                Buyer.objects.create(user=user, name=name, address=address,line_id=line_id,tel=tel,zipcode=zipcode)
+                Buyer.objects.create(user=user, name=name, address=address,line_id=line_id,tel=tel,zipcode=zipcode,client_id=client_id,email=email)
                 return redirect('buyer-list')
     context = {
         'form': forms
@@ -264,24 +266,11 @@ class WarehouseListView(ListView):
 
 #
 def show_all_po(request):
-    all_po = PurchaseOrder.objects.all()
+    all_po = PurchaseOrder.objects.all().order_by('-po_id')
     context = {'pos':all_po}
     return render(request,'store/po_list.html',context)
 
-
-# @login_required(login_url='login')
-# def create_po(request):
-#     forms = PoForm()
-#     if request.method == 'POST':
-#         forms = PoForm(request.POST)
-#         if forms.is_valid():
-#             forms.save()
-#             return redirect('po-list')
-#     context = {
-#         'form': forms
-#     }
-#     return render(request, 'store/addPo.html', context)
-
+@login_required(login_url='login')
 def create_po(request):
     template_name = 'store/addPo.html'
     if request.method == 'GET':
@@ -289,14 +278,14 @@ def create_po(request):
         formset = PoProductFormset(queryset=PurchaseOrderProduct.objects.none())
     elif request.method == 'POST':
         poform = PoForm(request.POST)
-        formset = PoProductFormset(request.POST)
+        formset = PoProductFormset(request.POST,request.FILES)
+
         if poform.is_valid()and formset.is_valid():
-            print('come')
-            # first save this book, as its reference will be used in `Author`
+            # first save this Po, as its reference will be used in `product`
             po = poform.save()
             for form in formset:
                 # so that `book` instance can be attached.
-                po_product = form.save()
+                po_product = form.save(commit=False)
                 po_product.po_id = po
                 po_product.save()
             return redirect('po-list')
@@ -304,15 +293,79 @@ def create_po(request):
         'poform': poform,
         'formset': formset,
     })
+@login_required(login_url='login')
+def update_ship(request,ship_id):
+    obj = Shipment.objects.get(id=ship_id)
+    shipmentform = ShipmentForm(instance = obj)
+    formset = PoFormset(queryset=PurchaseOrder.objects.filter(sack_id_id=ship_id))
+    if shipmentform == None:
+        return HttpResponse("Shipment "+str(ship_id) )
+    if request.method == 'POST':
+        data = request.POST
+        obj.name = data['name']
+        obj.status = data['status']
+        obj.save()
+        totalform = int(data['form-INITIAL_FORMS'])
+        for number in range(totalform):
+            sequence = 'form-'+str(number)+'-po_id'
+            print(data[sequence])
+            if data[sequence]:
+                po = PurchaseOrder.objects.get(po_id=data[sequence])
+                po.sack_id = obj
+                po.save()
 
-
+        return HttpResponseRedirect("/store/ship-list/")
+    context = {
+        'shipmentform':shipmentform,
+        'formset':formset
+    }
+    return render(request,"store/editShipment.html",context)
 @login_required(login_url='login')
 def update_po(request,po_id):
-    po = PurchaseOrder.objects.filter(po_id=po_id).first()
-    if po == None:
+    template_name = 'store/addPo.html'
+    print(request.POST)
+    obj = PurchaseOrder.objects.get(po_id=po_id)
+    poform = PoForm(instance = obj)
+    formset = PoProductFormset(queryset=PurchaseOrderProduct.objects.filter(po_id=po_id))
+    if obj == None:
         return HttpResponse("po_id "+str(po_id) )
-    context = {'po':po}
-    return render(request,"store/editPo.html",context)
+    if request.method == 'POST':
+        data = request.POST
+        print(data)
+        buyer = Buyer.objects.get(id=int(data['buyer']))
+        warehouse = Warehouse.objects.get(id=int(data['warehouse']))
+
+        obj.po_number = data['po_number']
+        obj.type = data['type']
+        obj.is_paid = True if 'is_paid' in data else False
+        obj.shipping_by = data['shipping_by']
+        obj.track_no = data['track_no']
+        obj.price = data['price']
+        obj.buyer = buyer
+        obj.warehouse = warehouse
+        obj.save()
+        totalform = int(data['form-INITIAL_FORMS'])
+
+        for number in range(totalform):
+            brand = 'form-' + str(number) + '-brand'
+            packing_type = 'form-' + str(number) + '-packing_type'
+            canton = 'form-' + str(number) + '-canton'
+            weight = 'form-' + str(number) + '-weight'
+            wight = 'form-' + str(number) + '-wight'
+            lenght = 'form-' + str(number) + '-lenght'
+            height = 'form-' + str(number) + '-height'
+            price = 'form-' + str(number) + '-price'
+            remark = 'form-' + str(number) + '-remark'
+            image = 'form-' + str(number) + '-image'
+            # pop = PurchaseOrderProduct.objects.get(po_id=data[sequence])
+            # pop.sack_id = obj
+            # pop.save()
+
+    context ={
+        'poform': poform,
+        'formset': formset,
+    }
+    return render(request,template_name,context)
 
 @login_required(login_url='login')
 def edit_po(request):
@@ -321,6 +374,7 @@ def edit_po(request):
     po = PurchaseOrder.objects.filter(po_id=request.POST.get('po_id')).first()
     if not po:
         return HttpResponse("Not Found")
+
     po.po_number = request.POST.get('po_number', '')
     po.type = request.POST.get('type', '')
     po.is_paid = request.POST.get('is_paid', False)
@@ -340,3 +394,45 @@ def delete_po(request,po_id):
         # after deleting redirect to
         # home page
     return redirect('po-list')
+
+def show_all_shipment(request):
+    all_po = Shipment.objects.all().order_by('-id')
+    context = {'pos':all_po}
+    return render(request,'store/shipment_list.html',context)
+
+@login_required(login_url='login')
+def create_shipment(request):
+    template_name = 'store/addShipment.html'
+    if request.method == 'GET':
+        shipmentform = ShipmentForm(request.GET or None)
+        formset = PoFormset(queryset=PurchaseOrder.objects.filter(sack_id__isnull=True))
+    elif request.method == 'POST':
+        shipmentform = ShipmentForm(request.POST)
+        formset = PoFormset(request.POST)
+        if shipmentform.is_valid()and formset.is_valid():
+            shipment = shipmentform.save()
+            for form in formset:
+            # so that `book` instance can be attached.
+                po = form.save(commit=False)
+                po.sack_id = shipment
+                if po.po_number:
+                    po.save()
+
+
+            return redirect('ship-list')
+    return render(request, template_name, {
+        'shipmentform': shipmentform,
+        'formset': formset,
+    })
+
+
+
+@login_required(login_url='login')
+def delete_ship(request,ship_id):
+    obj = get_object_or_404(Shipment,id = ship_id)
+    if request.method == "GET":
+        # delete object
+        obj.delete()
+        # after deleting redirect to
+        # home page
+    return redirect('ship-list')
