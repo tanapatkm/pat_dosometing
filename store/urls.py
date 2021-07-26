@@ -35,6 +35,8 @@ from .views import (
     delete_emp,
     delete_po,
     delete_ship,
+
+    change_status
 )
 
 urlpatterns = [
@@ -72,4 +74,6 @@ urlpatterns = [
     path('create-ship/', create_shipment, name='create-ship'),
     path('delete_ship/<int:ship_id>', delete_ship, name='delete-ship'),
     path('update_ship/<int:ship_id>', update_ship, name='update-ship'),
+
+    path('scan-product/<int:qr_id>', change_status, name='scan-pro'),
 ]
