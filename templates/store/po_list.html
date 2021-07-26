@@ -68,7 +68,7 @@
                                 <td>{{ po.price }}</td>
                                 <td>{{ po.buyer }}</td>
                                 <td>{{ po.sack_id }}</td>
-                                <td><a href="{% url 'update-po' po.po_id %}">Update </a></td>
+{#                                <td><a href="{% url 'update-po' po.po_id %}">Update </a></td>#}
                                 <td><a href="{% url 'delete-po' po.po_id %}">DELETE</a></td>
                             </tr>
                             {% endfor %}
