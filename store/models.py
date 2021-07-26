@@ -1,7 +1,12 @@
 import datetime
-
+from django.db.models.signals import pre_save
+from django.utils.crypto import get_random_string
+from django.conf import settings as appsettings
+import qrcode
 from django.db import models
-
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
 from users.models import User
 
 
@@ -182,10 +187,24 @@ class PurchaseOrderProduct(models.Model):
 
 class QrProduct(models.Model):
     product_id = models.ForeignKey(PurchaseOrderProduct,on_delete=models.PROTECT,related_name='po_product')
-    qr_code = models.ImageField()
+    product_name = models.CharField(max_length=255,default='')
+    qr_code = models.ImageField(upload_to='qr_code',blank=True)
     is_inbound_thai = models.BooleanField(default=False)
     is_outbound_china = models.BooleanField(default=False)
     is_outbound_thai = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
+# @receiver(post_save, sender=QrProduct)
+# def create_qrcode(sender, instance, created, **kwargs):
+#     if not instance.string:  # We need to check if we want to create
+#         qr = qrcode.QRCode(
+#             version=1,
+#             error_correction=qrcode.constants.ERROR_CORRECT_L,
+#             box_size=10,
+#             border=4, )
+#         qr.add_data(instance.string)
+#         img = qr.make_image()
+#         codepwd = appsettings.MEDIA_ROOT + "qr/" + instance.string + ".png"
+#         img.save(codepwd)
+#         instance.qr_code = "qr/" + instance.string + ".png"

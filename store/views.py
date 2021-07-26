@@ -6,6 +6,11 @@ from users.models import User
 from .models import *
 from .forms import *
 from django.forms import inlineformset_factory
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image,ImageDraw
+
 
 
 # EMP views
@@ -288,6 +293,16 @@ def create_po(request):
                 po_product = form.save(commit=False)
                 po_product.po_id = po
                 po_product.save()
+                po_product.refresh_from_db()
+                for canton in range(int(po_product.canton)):
+                    po_qr = QrProduct.objects.create(product_id=po_product)
+                    data= 'lcl-cargo-2564.herokuapp.com/store/scan-product/'+str(po_qr.id)
+                    img = qrcode.make(data)
+                    fname = 'qr_code/qr_'+str(po_qr.id)+'.png'
+                    img.save(fname)
+                    po_qr.qr_code =fname
+                    po_qr.save()
+
             return redirect('po-list')
     return render(request, template_name, {
         'poform': poform,
@@ -308,7 +323,6 @@ def update_ship(request,ship_id):
         totalform = int(data['form-INITIAL_FORMS'])
         for number in range(totalform):
             sequence = 'form-'+str(number)+'-po_id'
-            print(data[sequence])
             if data[sequence]:
                 po = PurchaseOrder.objects.get(po_id=data[sequence])
                 po.sack_id = obj
@@ -436,3 +450,21 @@ def delete_ship(request,ship_id):
         # after deleting redirect to
         # home page
     return redirect('ship-list')
+
+@login_required(login_url='login')
+def change_status(request,qr_id):
+    qr_code = QrProduct.objects.get(id=qr_id)
+    if qr_code.is_outbound_china is False:
+        qr_code.is_outbound_china = True
+        qr_code.save()
+        return HttpResponseRedirect("/store/po-list/")
+
+    if qr_code.is_inbound_thai is False:
+        qr_code.is_inbound_thai = True
+        qr_code.save()
+        return HttpResponseRedirect("/store/po-list/")
+
+    if qr_code.is_outbound_thai is False:
+        qr_code.is_outbound_thai = True
+        qr_code.save()
+        return HttpResponseRedirect("/store/po-list/")
