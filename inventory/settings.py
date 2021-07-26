@@ -25,8 +25,8 @@ SECRET_KEY = 'k2z9po4i#n+1p(^ny1el2c!om(^-l+_%&ob0azk0-ike*-)81e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['lcl-cargo-2564.herokuapp.com']
-ALLOWED_HOSTS=[]
+ALLOWED_HOSTS = ['lcl-cargo-2564.herokuapp.com']
+# ALLOWED_HOSTS=[]
 
 # Application definition
 
@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'inventory.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-# DATABASE_URL = 'postgres://mcyofhxlfincgw:f492e42b5661decb54a9f9c1198b4397baaede7cc3c6a312e01bc7ca629b76b7@ec2-52-5-1-20.compute-1.amazonaws.com:5432/d8bvigtcf4pi4i'
-DATABASE_URL='postgres://patinwza@localhost:5432/pat_lcl'
+DATABASE_URL = 'postgres://mcyofhxlfincgw:f492e42b5661decb54a9f9c1198b4397baaede7cc3c6a312e01bc7ca629b76b7@ec2-52-5-1-20.compute-1.amazonaws.com:5432/d8bvigtcf4pi4i'
+# DATABASE_URL='postgres://patinwza@localhost:5432/pat_lcl'
 
 DATABASES = {
      'default': dj_database_url.config(default=DATABASE_URL)
